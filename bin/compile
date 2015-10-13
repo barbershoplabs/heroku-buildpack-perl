@@ -16,6 +16,8 @@ ENV_DIR=$3
 
 PATH="$BUILD_DIR/local/bin:$PATH"
 
+echo "BUILD DIR IS: $BUILD_DIR"
+
 export PERL5LIB="$BUILD_DIR/local/lib/perl5"
 
 PERL_CPANM_OPT="--quiet --notest -l $BUILD_DIR/local"
@@ -38,7 +40,7 @@ fi
 
 echo "-----> Installing dependencies"
 echo "cpanm options: $PERL_CPANM_OPT" | indent
-/app/perl5/bin/cpanm --installdeps . 2>&1 | indent
+$BUILD_DIR/app/perl5/bin/cpanm --installdeps . 2>&1 | indent
 
 if [ -d $BUILD_DIR/local ]; then
   rm -rf $CACHE_DIR/local
