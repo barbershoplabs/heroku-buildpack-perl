@@ -20,8 +20,6 @@ echo "BUILD DIR IS: $BUILD_DIR"
 echo "CACHE DIR IS: $CACHE_DIR"
 echo "ENV DIR IS: $ENV_DIR"
 
-export PERL5LIB="$BUILD_DIR/local/lib/perl5"
-
 PERL_CPANM_OPT="--quiet --notest -l $BUILD_DIR/local"
 if [ -f $ENV_DIR/PERL_CPANM_OPT ]; then
   PERL_CPANM_OPT="$PERL_CPANM_OPT $(cat $ENV_DIR/PERL_CPANM_OPT)"
@@ -49,10 +47,12 @@ $BUILD_DIR/local/bin/cpanm --installdeps . 2>&1 | indent
 
 if [ -d $BUILD_DIR/local ]; then
   echo "WE HAVE BUILD_DIR LOCAL"
-  # rm -rf $CACHE_DIR/local
-  # mkdir -p $CACHE_DIR
-  rm -rf /app/perl5
-  mkdir -p /app/perl5
-  cp -a $BUILD_DIR/local /app/perl5
-  # cp -a $BUILD_DIR/local $CACHE_DIR/local
+  rm -rf $CACHE_DIR/local
+  mkdir -p $CACHE_DIR
+  # rm -rf /app/perl5
+  # mkdir -p /app/perl5
+  # cp -a $BUILD_DIR/local /app/perl5
+  cp -a $BUILD_DIR/local $CACHE_DIR/local
 fi
+
+export PERL5LIB="$BUILD_DIR/local/lib/perl5:/app/local/lib/perl5"
