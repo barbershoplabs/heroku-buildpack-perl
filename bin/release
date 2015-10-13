@@ -1,8 +1,13 @@
 #!/bin/sh
 
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
 cat << EOF
 ---
 addons:
 config_vars:
   PATH: local/bin:/usr/local/bin:/usr/bin:/bin
+  PERL5LIB: $BUILD_DIR/local/lib/perl5:/app/local/lib/perl5
 EOF
