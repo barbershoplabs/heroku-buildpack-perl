@@ -17,6 +17,8 @@ ENV_DIR=$3
 PATH="$BUILD_DIR/local/bin:$PATH"
 
 echo "BUILD DIR IS: $BUILD_DIR"
+echo "CACHE DIR IS: $CACHE_DIR"
+echo "ENV DIR IS: $ENV_DIR"
 
 export PERL5LIB="$BUILD_DIR/local/lib/perl5"
 
@@ -26,23 +28,27 @@ if [ -f $ENV_DIR/PERL_CPANM_OPT ]; then
 fi
 export PERL_CPANM_OPT
 
-rm -rf $BUILD_DIR/local
-if [ -d $CACHE_DIR/local ]; then
-  cp -a $CACHE_DIR/local $BUILD_DIR/local
-fi
+# rm -rf $BUILD_DIR/local
+# if [ -d $CACHE_DIR/local ]; then
+#   cp -a $CACHE_DIR/local $BUILD_DIR/local
+# fi
 
 cd $BUILD_DIR
 
-if ! [ -e $BUILD_DIR/local/bin/cpanm ]; then
+# if ! [ -e $BUILD_DIR/local/bin/cpanm ]; then
   echo "-----> Bootstrapping cpanm"
   curl -L --silent https://raw.github.com/miyagawa/cpanminus/master/cpanm | perl - App::cpanminus 2>&1 | indent
-fi
+# fi
+
+echo
+
 
 echo "-----> Installing dependencies"
-echo "cpanm options: $PERL_CPANM_OPT" | indent
-$BUILD_DIR/app/perl5/bin/cpanm --installdeps . 2>&1 | indent
+# echo "cpanm options: $PERL_CPANM_OPT" | indent
+$BUILD_DIR/local/bin/cpanm --installdeps . 2>&1 | indent
 
 if [ -d $BUILD_DIR/local ]; then
+  echo "WE HAVE BUILD_DIR LOCAL"
   rm -rf $CACHE_DIR/local
   mkdir -p $CACHE_DIR
   cp -a $BUILD_DIR/local $CACHE_DIR/local
